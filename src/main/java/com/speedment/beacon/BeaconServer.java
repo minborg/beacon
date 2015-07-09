@@ -42,33 +42,43 @@ public class BeaconServer extends NanoHTTPD {
 
         final Map<String, String> params = session.getParms();
 
-        System.out.println(method + " '" + uri + "' "
+        System.out.print(method + " '" + uri + "' "
                 + params.entrySet().stream()
                 .map(e -> "\"" + e.getKey() + "\" = \"" + limitString(e.getValue()) + "\"")
                 .collect(Collectors.joining(", ", "(", ")"))
                 + " -> "
         );
 
-        String msg = "Arne issued the command " + command;
-
-        if ("Cats".equals(command)) {
-            return response(Resources.CATS_JPG);
+        final Response resp;
+        
+        switch (command) {
+            case "Cats"     : resp = response(Resources.CATS_JPG);  break;
+            case "Mario"    : resp = response(Resources.MARIO_PNG); break;
+            case "Beacon"   : resp = response(Resources.ONE_PNG);   break;
+            case "One"      : resp = response(Resources.ONE_GIF);   break;
+            default         : resp = response(Resources.NOT_FOUND_404);
         }
-        if ("Mario".equals(command)) {
-            return response(Resources.MARIO_PNG);
+        
+        try {
+            System.out.println(resp.getStatus().getDescription() + " (" + resp.getData().available() + " bytes)");
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
-        if ("Beacon".equals(command)) {
-            return response(Resources.ONE_PNG);
-        }
-
-        return response(Resources.NOT_FOUND_404);
+        
+        return resp;
     }
 
     private NanoHTTPD.Response response(Resource resource) {
-        final NanoHTTPD.Response response = new NanoHTTPD.Response(Response.Status.OK, resource.getMimeType().toText(), resource.newInputStream());
+        final NanoHTTPD.Response response = new NanoHTTPD.Response(
+            Response.Status.OK, 
+            resource.getMimeType().toText(), 
+            resource.newInputStream()
+        );
+        
         response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.addHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.addHeader("Expires", "0"); // Proxies
+        
         return response;
     }
 
