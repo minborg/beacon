@@ -3,13 +3,11 @@ package com.speedment.beacon;
 import com.speedment.beacon.resource.Resource;
 import com.speedment.beacon.resource.Resources;
 import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.NanoHTTPD.Response.Status;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import static java.util.Optional.ofNullable;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.joining;
 
 /**
  *
@@ -24,11 +22,13 @@ public class BeaconServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         final Map<String, String> files = new HashMap<>();
-        final NanoHTTPD.Method method = session.getMethod();
+        final Method method = session.getMethod();
         final String uri = session.getUri();
         final String command = uri.substring(uri.indexOf("/") + 1);
 
-        if (Method.PUT.equals(method) || Method.POST.equals(method)) {
+        if (Method.PUT.equals(method) 
+        ||  Method.POST.equals(method)) {
+            
             try {
                 session.parseBody(files);
             } catch (IOException ex) {
@@ -44,19 +44,19 @@ public class BeaconServer extends NanoHTTPD {
 
         System.out.print(method + " '" + uri + "' "
                 + params.entrySet().stream()
-                .map(e -> "\"" + e.getKey() + "\" = \"" + limitString(e.getValue()) + "\"")
-                .collect(Collectors.joining(", ", "(", ")"))
+                .map(e -> "\"" + e.getKey() + "\" = \"" + e.getValue() + "\"")
+                .collect(joining(", ", "(", ")"))
                 + " -> "
         );
 
         final Response resp;
         
         switch (command) {
-            case "Cats"     : resp = response(Resources.CATS_JPG);  break;
-            case "Mario"    : resp = response(Resources.MARIO_PNG); break;
-            case "Beacon"   : resp = response(Resources.ONE_PNG);   break;
-            case "One"      : resp = response(Resources.ONE_GIF);   break;
-            default         : resp = response(Resources.NOT_FOUND_404);
+            case "Cats"     : resp = Helper.success(Resources.CATS_JPG);  break;
+            case "Mario"    : resp = Helper.success(Resources.MARIO_PNG); break;
+            case "Beacon"   : resp = Helper.success(Resources.ONE_PNG);   break;
+            case "one.gif"  : resp = Helper.success(Resources.ONE_GIF);   break;
+            default         : resp = Helper.fail();
         }
         
         try {
@@ -67,46 +67,31 @@ public class BeaconServer extends NanoHTTPD {
         
         return resp;
     }
-
-    private NanoHTTPD.Response response(Resource resource) {
-        final NanoHTTPD.Response response = new NanoHTTPD.Response(
-            Response.Status.OK, 
-            resource.getMimeType().toText(), 
-            resource.newInputStream()
-        );
+    
+    private static class Helper {
         
-        response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.addHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.addHeader("Expires", "0"); // Proxies
+        private Helper() {}
         
-        return response;
-    }
-
-    private long parseLong(Map<String, String> params, String command) {
-        return parseOptional(params, command).map(s -> Long.parseLong(s)).orElse(-1L);
-    }
-
-    private Optional<Timestamp> parseTime(Map<String, String> params, String command) {
-        return parseOptional(params, command).map(s -> Timestamp.valueOf(s.replaceAll("T", " ")));
-    }
-
-    private String parseString(Map<String, String> params, String command) {
-        return parseOptional(params, command).orElse("");
-    }
-
-    private Optional<String> parseOptional(Map<String, String> params, String command) {
-        return ofNullable(params.get(command)).map(s -> s.trim()).filter(p -> !p.isEmpty());
-    }
-
-    private String limitString(String s) {
-        return limitString(s, 64);
-    }
-
-    private String limitString(String s, int len) {
-        if (s.length() <= len) {
-            return s;
+        public static Response fail() {
+            return response(Resources.NOT_FOUND_404, Status.NOT_FOUND);
         }
-        return s.substring(0, len) + "...";
-    }
 
+        public static Response success(Resource resource) {
+            return response(resource, Status.OK);
+        }
+
+        private static Response response(Resource resource, Status status) {
+            final NanoHTTPD.Response response = new NanoHTTPD.Response(
+                status, 
+                resource.getMimeType().toText(), 
+                resource.newInputStream()
+            );
+
+            response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            response.addHeader("Pragma", "no-cache"); // HTTP 1.0.
+            response.addHeader("Expires", "0"); // Proxies
+
+            return response;
+        }
+    }
 }
