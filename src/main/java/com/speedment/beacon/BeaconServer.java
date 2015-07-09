@@ -60,9 +60,6 @@ public class BeaconServer extends NanoHTTPD {
         if ("Beacon".equals(command)) {
             return response(Resources.ONE_PNG);
         }
-        if ("beacon.png".equals(command)) {
-            return response(Resources.ONE_PNG);
-        }
 
         return response(Resources.NOT_FOUND_404);
     }

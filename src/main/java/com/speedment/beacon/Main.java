@@ -11,12 +11,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new SpeedmentStatApplication().start();
+        final SpeedmentStatApplication app = new SpeedmentStatApplication().start();
         try {
-
             ServerRunner.run(BeaconServer.class);
         } finally {
-
+            app.stop();
         }
     }
 
