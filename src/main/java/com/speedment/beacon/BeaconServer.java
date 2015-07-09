@@ -1,12 +1,21 @@
 package com.speedment.beacon;
 
+import static com.speedment.beacon.Logger.Severity.ERROR;
 import com.speedment.beacon.resource.Resource;
 import com.speedment.beacon.resource.Resources;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon.Beacon;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property.BeaconProperty;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property_key.BeaconPropertyKey;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
+
 
 /**
  *
@@ -14,8 +23,11 @@ import static java.util.stream.Collectors.joining;
  */
 public class BeaconServer extends NanoHTTPD {
 
+    private final Map<String, BeaconPropertyKey> beaconPropertyKeys;
+
     public BeaconServer() {
         super(8081);
+        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(BeaconPropertyKey::getKey, Function.identity()));
     }
 
     @Override
@@ -23,7 +35,6 @@ public class BeaconServer extends NanoHTTPD {
         final Method method = session.getMethod();
         final String uri = session.getUri();
         final String command = uri.substring(uri.indexOf("/") + 1);
-
         final Map<String, String> params = session.getParms();
 
         System.out.print(method + " '" + uri + "' "
@@ -34,13 +45,23 @@ public class BeaconServer extends NanoHTTPD {
         );
 
         final Response resp;
-        
+
         switch (command) {
-            case "Cats"     : resp = Helper.success(Resources.CATS_JPG);  break;
-            case "Mario"    : resp = Helper.success(Resources.MARIO_PNG); break;
-            case "Beacon"   : resp = Helper.success(Resources.ONE_PNG);   break;
-            case "one.gif"  : resp = Helper.success(Resources.ONE_GIF);   break;
-            default         : resp = Helper.fail();
+            case "Cats":
+                resp = Helper.success(Resources.CATS_JPG);
+                break;
+            case "Mario":
+                resp = Helper.success(Resources.MARIO_PNG);
+                break;
+            case "Beacon":
+                resp = Helper.success(Resources.ONE_PNG);
+                logToDb(session, params);
+                break;
+            case "one.gif":
+                resp = Helper.success(Resources.ONE_GIF);
+                break;
+            default:
+                resp = Helper.fail();
         }
         
         try {
@@ -48,14 +69,38 @@ public class BeaconServer extends NanoHTTPD {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return resp;
     }
-    
+
+    private void logToDb(IHTTPSession session, Map<String, String> params) {
+        // In a separate Thread
+
+        final String ipAddress = session.getHeaders().get("remote-addr");
+        final Optional<Beacon> oBeacon = Beacon.builder().setIpAddress(ipAddress).persist();
+        
+        if (oBeacon.isPresent()) {
+            final Beacon beacon = oBeacon.get();
+            
+            // Copy from header
+            Arrays.asList("Referer", "User-Agent").stream().forEach((key) -> {
+                String value = session.getHeaders().get(key);
+                Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
+                        .setBeacon(beacon.getId())
+                        .setKey(beaconPropertyKeys.get(key).getId())
+                        .setValue(value)
+                        .persist();
+            });
+        } else {
+            Logger.log(ERROR, "Unable to create Beacon");
+        }
+    }
+
     private static class Helper {
-        
-        private Helper() {}
-        
+
+        private Helper() {
+        }
+
         public static Response fail() {
             return response(Resources.NOT_FOUND_404, Status.NOT_FOUND);
         }
@@ -66,9 +111,9 @@ public class BeaconServer extends NanoHTTPD {
 
         private static Response response(Resource resource, Status status) {
             final NanoHTTPD.Response response = new NanoHTTPD.Response(
-                status, 
-                resource.getMimeType().toText(), 
-                resource.newInputStream()
+                    status,
+                    resource.getMimeType().toText(),
+                    resource.newInputStream()
             );
 
             response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
