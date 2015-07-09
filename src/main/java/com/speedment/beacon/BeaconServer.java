@@ -1,14 +1,20 @@
 package com.speedment.beacon;
 
+import static com.speedment.beacon.Logger.Severity.ERROR;
 import com.speedment.beacon.resource.Resource;
 import com.speedment.beacon.resource.Resources;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon.Beacon;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property.BeaconProperty;
+import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property_key.BeaconPropertyKey;
 import fi.iki.elonen.NanoHTTPD;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import static java.util.Optional.ofNullable;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -17,8 +23,11 @@ import java.util.stream.Collectors;
  */
 public class BeaconServer extends NanoHTTPD {
 
+    private final Map<String, BeaconPropertyKey> beaconPropertyKeys;
+
     public BeaconServer() {
         super(8081);
+        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(BeaconPropertyKey::getKey, Function.identity()));
     }
 
     @Override
@@ -58,10 +67,34 @@ public class BeaconServer extends NanoHTTPD {
             return response(Resources.MARIO_PNG);
         }
         if ("Beacon".equals(command)) {
+
+            final String ipAddress = session.getHeaders().get("remote-addr");
+            logToDb(ipAddress, params);
+
             return response(Resources.ONE_PNG);
         }
 
         return response(Resources.NOT_FOUND_404);
+    }
+
+    private void logToDb(final String ipAddres, Map<String, String> params) {
+        // In a separate Thread
+
+        final Optional<Beacon> oBeacon = Beacon.builder().setIpAddress(ipAddres).persist();
+        if (oBeacon.isPresent()) {
+            final Beacon beacon = oBeacon.get();
+            // Copy from header
+            Arrays.asList("Referer", "User-Agent").stream().forEach((key) -> {
+                String value = params.get(key);
+                Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
+                        .setBeacon(beacon.getId())
+                        .setKey(beaconPropertyKeys.get(key).getId())
+                        .setValue(value)
+                        .persist();
+            });
+        } else {
+            Logger.log(ERROR, "Unable to create Beacon");
+        }
     }
 
     private NanoHTTPD.Response response(Resource resource) {
