@@ -10,7 +10,6 @@ import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import static java.util.stream.Collectors.joining;
@@ -34,25 +33,9 @@ public class BeaconServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        final Map<String, String> files = new HashMap<>();
         final Method method = session.getMethod();
         final String uri = session.getUri();
         final String command = uri.substring(uri.indexOf("/") + 1);
-
-        if (Method.PUT.equals(method)
-                || Method.POST.equals(method)) {
-
-            try {
-                session.parseBody(files);
-            } catch (IOException ex) {
-                return new Response(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT,
-                        "SERVER INTERNAL ERROR: IOException: " + ex.getMessage()
-                );
-            } catch (ResponseException ex) {
-                return new Response(ex.getStatus(), MIME_PLAINTEXT, ex.getMessage());
-            }
-        }
-
         final Map<String, String> params = session.getParms();
 
         System.out.print(method + " '" + uri + "' "
@@ -80,6 +63,12 @@ public class BeaconServer extends NanoHTTPD {
                 break;
             default:
                 resp = Helper.fail();
+        }
+        
+        try {
+            System.out.println(resp.getStatus().getDescription() + " (" + resp.getData().available() + " bytes)");
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
         return resp;
