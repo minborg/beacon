@@ -13,10 +13,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 
+
+// select * from beacon as b, beacon_property as bp, beacon_property_key as bpk where (bp.beacon=b.id) and (bp.key=bpk.id);
 
 /**
  *
@@ -28,7 +28,8 @@ public class BeaconServer extends NanoHTTPD {
 
     public BeaconServer() {
         super(8081);
-        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(BeaconPropertyKey::getKey, Function.identity()));
+        //beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(BeaconPropertyKey::getKey, Function.identity()));
+        beaconPropertyKeys = new HashMap<>();
     }
 
     @Override

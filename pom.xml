@@ -4,6 +4,7 @@
     <groupId>com.speedment</groupId>
     <artifactId>beacon</artifactId>
     <version>1.0.0-rc1-SNAPSHOT</version>
+    <name>Beacon</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +21,21 @@
                 <artifactId>speedment-maven-plugin</artifactId>
                 <version>${speedment.version}</version>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.speedment.beacon.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            
+            
         </plugins>
     </build>
     
