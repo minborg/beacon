@@ -1,3 +1,6 @@
 /target/
 settings.properties
 /src/main/java/com/speedment/beacon/speedment_stat/
+dependency-reduced-pom.xml
+nbactions.xml
+
