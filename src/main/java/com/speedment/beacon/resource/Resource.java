@@ -8,9 +8,6 @@ import java.io.InputStream;
  * @author pemi
  */
 public interface Resource {
-
     MimeType getMimeType();
-
     InputStream newInputStream();
-
 }
