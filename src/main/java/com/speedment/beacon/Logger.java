@@ -26,7 +26,7 @@ public class Logger {
     }
 
     public static void log(Severity severity, Object msg) {
-        System.out.println(new Timestamp(System.currentTimeMillis()) + " " + severity.toText() + " " + Objects.toString(msg));
+        System.out.println(new Timestamp(System.currentTimeMillis()).toInstant() + " " + severity.toText() + " (" + Thread.currentThread().getName() + ") " + Objects.toString(msg));
     }
 
 }
