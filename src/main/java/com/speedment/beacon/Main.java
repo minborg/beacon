@@ -1,6 +1,7 @@
 package com.speedment.beacon;
 
 import com.speedment.beacon.speedment_stat.SpeedmentStatApplication;
+import com.speedment.core.runtime.SpeedmentApplicationLifecycle;
 import fi.iki.elonen.NanoHTTPD;
 import java.io.IOException;
 
@@ -12,6 +13,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        System.out.println(SpeedmentApplicationLifecycle.class.getPackage().getImplementationVersion());
+        
         // Fixa så man kan göra  with(Hare.class,
         final SpeedmentStatApplication app = new SpeedmentStatApplication()
                 //                .withUsername("tryggve")

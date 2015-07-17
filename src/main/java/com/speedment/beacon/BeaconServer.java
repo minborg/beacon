@@ -13,11 +13,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
@@ -32,15 +33,21 @@ import static java.util.stream.Collectors.joining;
 public class BeaconServer extends NanoHTTPD {
 
     private static final int POOL_SIZE = 128;
-    
-    private final Map<String, BeaconPropertyKey> beaconPropertyKeys;
+
+    private Map<String, BeaconPropertyKey> beaconPropertyKeys;
     private final ExecutorService pool;
-    
+    private final ScheduledExecutorService scheduler;
+
+    private void readBeaconPropertyKeys() {
+        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(bpc -> bpc.getKey().toLowerCase(), Function.identity()));
+    }
 
     public BeaconServer() {
         super(8081);
-        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(bpc -> bpc.getKey().toLowerCase(), Function.identity()));
+        readBeaconPropertyKeys();
         pool = Executors.newFixedThreadPool(POOL_SIZE);
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(this::readBeaconPropertyKeys, 1, 1, TimeUnit.MINUTES);
     }
 
     @Override
@@ -60,7 +67,7 @@ public class BeaconServer extends NanoHTTPD {
                 .append(" -> ");
 
         final Response resp;
-        
+
         switch (command) {
             case "Cats":
                 resp = Helper.success(Resources.CATS_JPG);
@@ -91,8 +98,6 @@ public class BeaconServer extends NanoHTTPD {
             ex.printStackTrace(System.err);
         }
 
-        
-        
         return resp;
     }
 
@@ -135,7 +140,7 @@ public class BeaconServer extends NanoHTTPD {
             });
 
             // Copy from URL parameters
-            Arrays.asList("site", "path", "comment", "version").stream().forEach((key) -> {
+            beaconPropertyKeys.keySet().stream().forEach((key) -> {
                 String value = session.getParms().get(key);
                 if (value != null) {
                     Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
@@ -192,4 +197,5 @@ public class BeaconServer extends NanoHTTPD {
             return response;
         }
     }
+
 }
