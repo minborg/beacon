@@ -1,12 +1,15 @@
 package com.speedment.beacon;
 
-import static com.speedment.beacon.Logger.Severity.ERROR;
-import static com.speedment.beacon.Logger.Severity.INFO;
+import com.speedment.Manager;
+import com.speedment.Speedment;
 import com.speedment.beacon.resource.Resource;
 import com.speedment.beacon.resource.Resources;
 import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon.Beacon;
 import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property.BeaconProperty;
 import com.speedment.beacon.speedment_stat.db0.speedment_stat.beacon_property_key.BeaconPropertyKey;
+import com.speedment.exception.SpeedmentException;
+import com.speedment.internal.logging.Logger;
+import com.speedment.internal.logging.LoggerManager;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.joining;
 
 // select * from beacon as b, beacon_property as bp, beacon_property_key as bpk where (bp.beacon=b.id) and (bp.key=bpk.id);
 //select b.id, b.created,b.ipAddress, bpk.key, bp.value from beacon as b, beacon_property as bp, beacon_property_key as bpk where (bp.beacon=b.id) and (bp.key=bpk.id);
@@ -32,6 +36,13 @@ import static java.util.stream.Collectors.joining;
  */
 public class BeaconServer extends NanoHTTPD {
 
+    private static final Logger LOGGER = LoggerManager.getLogger(BeaconServer.class);
+
+    private final Speedment speedment;
+    private final Manager<Beacon> beaconManager;
+    private final Manager<BeaconProperty> beaconPropertyManager;
+    private final Manager<BeaconPropertyKey> beaconPropertyKeyManager;
+
     private static final int POOL_SIZE = 128;
 
     private Map<String, BeaconPropertyKey> beaconPropertyKeys;
@@ -39,11 +50,15 @@ public class BeaconServer extends NanoHTTPD {
     private final ScheduledExecutorService scheduler;
 
     private void readBeaconPropertyKeys() {
-        beaconPropertyKeys = BeaconPropertyKey.stream().collect(Collectors.toMap(bpc -> bpc.getKey().toLowerCase(), Function.identity()));
+        beaconPropertyKeys = beaconPropertyKeyManager.stream().collect(Collectors.toMap(bpc -> bpc.getKey().toLowerCase(), Function.identity()));
     }
 
-    public BeaconServer() {
+    public BeaconServer(Speedment speedment) {
         super(8081);
+        this.speedment = speedment;
+        beaconManager = speedment.managerOf(Beacon.class);
+        beaconPropertyManager = speedment.managerOf(BeaconProperty.class);
+        beaconPropertyKeyManager = speedment.managerOf(BeaconPropertyKey.class);
         readBeaconPropertyKeys();
         pool = Executors.newFixedThreadPool(POOL_SIZE);
         scheduler = Executors.newScheduledThreadPool(1);
@@ -87,14 +102,14 @@ public class BeaconServer extends NanoHTTPD {
         }
 
         try {
-            sb
-                    .append(resp.getStatus().getDescription())
-                    .append(" (")
-                    .append(resp.getData().available())
-                    .append(" bytes)");
-            Logger.log(INFO, sb);
+//            sb
+//                    .append(resp.getStatus().getDescription())
+//                    .append(" (")
+//                    .append(resp.getData().available())
+//                    .append(" bytes)");
+            LOGGER.info("%s (%d) bytes", resp.getStatus().getDescription(), resp.getData().available());
         } catch (IOException ex) {
-            Logger.log(ERROR, ex.getMessage());
+            LOGGER.error(ex, ex.getMessage());
             ex.printStackTrace(System.err);
         }
 
@@ -122,16 +137,15 @@ public class BeaconServer extends NanoHTTPD {
     private void logToDb(IHTTPSession session, Map<String, String> params) {
 
         final String ipAddress = session.getHeaders().get("remote-addr");
-        final Optional<Beacon> oBeacon = Beacon.builder().setIpAddress(ipAddress).persist(/*MetadataUtil.toText(System.out::println)*/);
 
-        if (oBeacon.isPresent()) {
-            final Beacon beacon = oBeacon.get();
+        try {
+            final Beacon beacon = beaconManager.newInstance().setIpAddress(ipAddress).persist(/*MetadataUtil.toText(System.out::println)*/);
 
             // Copy from header
             Arrays.asList("referer", "user-agent").stream().forEach((key) -> {
                 String value = session.getHeaders().get(key);
                 if (value != null) {
-                    Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
+                    BeaconProperty beaconProperty = beaconPropertyManager.newInstance()
                             .setBeacon(beacon.getId())
                             .setKey(beaconPropertyKeys.get(key).getId())
                             .setValue(value)
@@ -143,7 +157,7 @@ public class BeaconServer extends NanoHTTPD {
             beaconPropertyKeys.keySet().stream().forEach((key) -> {
                 String value = session.getParms().get(key);
                 if (value != null) {
-                    Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
+                    BeaconProperty beaconProperty = beaconPropertyManager.newInstance()
                             .setBeacon(beacon.getId())
                             .setKey(beaconPropertyKeys.get(key).getId())
                             .setValue(value)
@@ -156,7 +170,7 @@ public class BeaconServer extends NanoHTTPD {
                 InetAddress addr = InetAddress.getByName(ipAddress);
                 String value = addr.getCanonicalHostName();
                 final String key = "ip-address-name";
-                Optional<BeaconProperty> oBeaconProperty = BeaconProperty.builder()
+                BeaconProperty beaconProperty = beaconPropertyManager.newInstance()
                         .setBeacon(beacon.getId())
                         .setKey(beaconPropertyKeys.get(key).getId())
                         .setValue(value)
@@ -165,8 +179,8 @@ public class BeaconServer extends NanoHTTPD {
                 // Ignore
             }
 
-        } else {
-            Logger.log(ERROR, "Unable to create Beacon");
+        } catch (SpeedmentException se) {
+            LOGGER.error("Unable to create Beacon", se);
         }
     }
 

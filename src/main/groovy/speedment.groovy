@@ -1,4 +1,4 @@
-import com.speedment.core.config.model.parameters.*
+import com.speedment.config.parameters.*
 
 name = "speedment_stat";
 packageLocation = "src/main/java";
@@ -8,8 +8,8 @@ dbms {
     ipAddress = "127.0.0.1";
     name = "db0";
     port = 3306;
-    type = StandardDbmsType.MYSQL;
     username = "root";
+    typeName = "MySQL";
     enabled = true;
     schema {
         columnCompressionType = ColumnCompressionType.NONE;
