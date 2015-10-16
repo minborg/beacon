@@ -17,14 +17,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.joining;
 
 // select * from beacon as b, beacon_property as bp, beacon_property_key as bpk where (bp.beacon=b.id) and (bp.key=bpk.id);
@@ -78,8 +76,8 @@ public class BeaconServer extends NanoHTTPD {
                 .append(" ").append(method)
                 .append(" '").append(uri).append("' ")
                 .append(params.entrySet().stream().map(e -> "\"" + e.getKey() + "\" = \"" + e.getValue() + "\"")
-                        .collect(joining(", ", "(", ")")))
-                .append(" -> ");
+                        .collect(joining(", ", "(", ")")));
+
 
         final Response resp;
 
@@ -102,12 +100,8 @@ public class BeaconServer extends NanoHTTPD {
         }
 
         try {
-//            sb
-//                    .append(resp.getStatus().getDescription())
-//                    .append(" (")
-//                    .append(resp.getData().available())
-//                    .append(" bytes)");
-            LOGGER.info("%s (%d) bytes", resp.getStatus().getDescription(), resp.getData().available());
+
+            LOGGER.info("%s -> %s (%d) bytes", sb.toString(), resp.getStatus().getDescription(), resp.getData().available());
         } catch (IOException ex) {
             LOGGER.error(ex, ex.getMessage());
             ex.printStackTrace(System.err);
