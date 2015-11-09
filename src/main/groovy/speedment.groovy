@@ -8,7 +8,7 @@ dbms {
     ipAddress = "127.0.0.1";
     name = "db0";
     port = 3306;
-    username = "root";
+    username = "beacon";
     typeName = "MySQL";
     enabled = true;
     schema {
