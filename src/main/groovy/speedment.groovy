@@ -29,7 +29,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "ID";
                 autoincrement = true;
                 enabled = true;
@@ -38,7 +38,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.sql.Timestamp.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.TimestampIdentityMapper.class;
                 name = "CTIME";
                 autoincrement = false;
                 enabled = true;
@@ -47,7 +47,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Byte.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.ByteIdentityMapper.class;
                 name = "TYPE_CODE";
                 autoincrement = false;
                 enabled = true;
@@ -56,7 +56,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "SCHEMA_NAME";
                 autoincrement = false;
                 enabled = true;
@@ -65,7 +65,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "TABLE_NAME";
                 autoincrement = false;
                 enabled = true;
@@ -74,7 +74,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY0";
                 autoincrement = false;
                 enabled = true;
@@ -83,7 +83,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY1";
                 autoincrement = false;
                 enabled = true;
@@ -92,7 +92,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY2";
                 autoincrement = false;
                 enabled = true;
@@ -101,7 +101,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY3";
                 autoincrement = false;
                 enabled = true;
@@ -110,7 +110,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY4";
                 autoincrement = false;
                 enabled = true;
@@ -119,7 +119,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "PRIMARYKEY5";
                 autoincrement = false;
                 enabled = true;
@@ -128,7 +128,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "CLIENT_NAME";
                 autoincrement = false;
                 enabled = true;
@@ -179,7 +179,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -188,7 +188,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.sql.Timestamp.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.TimestampIdentityMapper.class;
                 name = "created";
                 autoincrement = false;
                 enabled = true;
@@ -197,7 +197,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "ipAddress";
                 autoincrement = false;
                 enabled = true;
@@ -238,7 +238,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "beacon";
                 autoincrement = false;
                 enabled = true;
@@ -247,7 +247,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "key";
                 autoincrement = false;
                 enabled = true;
@@ -256,7 +256,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "value";
                 autoincrement = false;
                 enabled = true;
@@ -336,7 +336,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -345,7 +345,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "key";
                 autoincrement = false;
                 enabled = true;
@@ -386,7 +386,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -395,7 +395,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "regId";
                 autoincrement = false;
                 enabled = true;
@@ -404,7 +404,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "first_name";
                 autoincrement = false;
                 enabled = true;
@@ -413,7 +413,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "last_name";
                 autoincrement = false;
                 enabled = true;
@@ -422,7 +422,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "email";
                 autoincrement = false;
                 enabled = true;
@@ -431,7 +431,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "organization";
                 autoincrement = false;
                 enabled = true;
@@ -440,7 +440,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "country";
                 autoincrement = false;
                 enabled = true;
@@ -449,7 +449,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "phone";
                 autoincrement = false;
                 enabled = true;
@@ -458,7 +458,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "version";
                 autoincrement = false;
                 enabled = true;
@@ -467,7 +467,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "coreFullVersion";
                 autoincrement = false;
                 enabled = true;
@@ -476,7 +476,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.sql.Timestamp.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.TimestampIdentityMapper.class;
                 name = "created";
                 autoincrement = false;
                 enabled = true;
@@ -485,7 +485,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "ipAddress";
                 autoincrement = false;
                 enabled = true;
@@ -494,7 +494,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "ipAddressName";
                 autoincrement = false;
                 enabled = true;
@@ -503,7 +503,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "remotePort";
                 autoincrement = false;
                 enabled = true;
@@ -512,7 +512,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "comment";
                 autoincrement = false;
                 enabled = true;
@@ -563,7 +563,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -572,7 +572,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.sql.Timestamp.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.TimestampIdentityMapper.class;
                 name = "created";
                 autoincrement = false;
                 enabled = true;
@@ -581,7 +581,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "ipAddress";
                 autoincrement = false;
                 enabled = true;
@@ -590,7 +590,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "ipAddressName";
                 autoincrement = false;
                 enabled = true;
@@ -599,7 +599,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "remotePort";
                 autoincrement = false;
                 enabled = true;
@@ -608,7 +608,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "gui";
                 autoincrement = false;
                 enabled = true;
@@ -617,7 +617,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "coreFullVersion";
                 autoincrement = false;
                 enabled = true;
@@ -626,7 +626,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "sessionId";
                 autoincrement = false;
                 enabled = true;
@@ -635,7 +635,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "version";
                 autoincrement = false;
                 enabled = true;
@@ -644,7 +644,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "type";
                 autoincrement = false;
                 enabled = true;
@@ -653,7 +653,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "regId";
                 autoincrement = false;
                 enabled = true;
@@ -694,7 +694,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -703,7 +703,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Long.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.LongIdentityMapper.class;
                 name = "message";
                 autoincrement = false;
                 enabled = true;
@@ -712,7 +712,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "key";
                 autoincrement = false;
                 enabled = true;
@@ -721,7 +721,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "value";
                 autoincrement = false;
                 enabled = true;
@@ -782,7 +782,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -791,7 +791,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "title";
                 autoincrement = false;
                 enabled = true;
@@ -800,7 +800,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "sql";
                 autoincrement = false;
                 enabled = true;
@@ -809,7 +809,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "chartUrl";
                 autoincrement = false;
                 enabled = true;
@@ -818,7 +818,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "listOrder";
                 autoincrement = false;
                 enabled = true;
@@ -849,7 +849,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "id";
                 autoincrement = true;
                 enabled = true;
@@ -858,7 +858,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "site";
                 autoincrement = false;
                 enabled = true;
@@ -867,7 +867,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.String.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.StringIdentityMapper.class;
                 name = "artifact";
                 autoincrement = false;
                 enabled = true;
@@ -876,7 +876,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.sql.Timestamp.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.TimestampIdentityMapper.class;
                 name = "timeStamp";
                 autoincrement = false;
                 enabled = true;
@@ -885,7 +885,7 @@ dbms {
             column {
                 columnCompressionType = ColumnCompressionType.INHERIT;
                 fieldStorageType = FieldStorageType.INHERIT;
-                mapping = java.lang.Integer.class;
+                typeMapper = com.speedment.internal.core.config.mapper.identity.IntegerIdentityMapper.class;
                 name = "count";
                 autoincrement = false;
                 enabled = true;
